@@ -2,9 +2,13 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ExplorerNav } from '@/components/explorer/ExplorerNav';
+import { useDemo } from '@/components/global/DemoContext';
 
 export default function ExplorerLessonPage() {
+  const { currentPersona, showToast, addNotification } = useDemo();
+  const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showSparkQuiz, setShowSparkQuiz] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -26,8 +30,14 @@ export default function ExplorerLessonPage() {
     },
   ];
 
+  const handleCompleteMission = () => {
+    showToast(`🎉 Mission Completed! You earned +50 ⭐ Stars and unlocked the Mars Explorer Badge!`);
+    addNotification('Mission Unlocked!', 'Earned +50 Stars on Mars Rover Exploration.', 'reward', '/explorer/shop');
+    router.push('/explorer/dashboard');
+  };
+
   return (
-    <div className="min-h-screen bg-explorer-surface flex flex-col">
+    <div className="min-h-screen bg-explorer-surface flex flex-col font-sans">
       <ExplorerNav />
 
       <main className="flex-1 max-w-4xl mx-auto w-full p-6 md:p-8 space-y-6">
@@ -36,7 +46,7 @@ export default function ExplorerLessonPage() {
           <div className="flex items-center justify-between pb-4 border-b-2 border-explorer-surface-container">
             <Link
               href="/explorer/dashboard"
-              className="flex items-center gap-1 text-sm font-jakarta font-extrabold text-explorer-primary hover:underline"
+              className="flex items-center gap-1 text-sm font-jakarta font-extrabold text-[#2b6c00] hover:underline"
             >
               <span className="material-symbols-outlined text-lg">arrow_back</span>
               <span>Back to Map</span>
@@ -69,8 +79,8 @@ export default function ExplorerLessonPage() {
 
           {/* Spark Interactive Check-in */}
           {showSparkQuiz && (
-            <div className="p-6 rounded-2xl bg-explorer-primary-container/20 border-2 border-explorer-primary-container space-y-4 animate-in fade-in">
-              <h4 className="font-jakarta font-black text-base text-explorer-on-primary-container">
+            <div className="p-6 rounded-2xl bg-emerald-50 border-2 border-emerald-300 space-y-4 animate-in fade-in">
+              <h4 className="font-jakarta font-black text-base text-emerald-950">
                 ✦ Quick Spark Check: Why does Mars look red?
               </h4>
               <div className="space-y-2">
@@ -81,13 +91,18 @@ export default function ExplorerLessonPage() {
                 ].map((option, idx) => (
                   <button
                     key={option}
-                    onClick={() => setSelectedAnswer(idx)}
+                    onClick={() => {
+                      setSelectedAnswer(idx);
+                      if (idx === 1) {
+                        showToast('⭐ Correct! Mars has iron-rich rust on its surface!');
+                      }
+                    }}
                     className={`w-full p-3 rounded-2xl font-jakarta font-bold text-sm text-left transition-all border-2 ${
                       selectedAnswer === idx
                         ? idx === 1
-                          ? 'bg-green-100 border-green-500 text-green-800'
-                          : 'bg-red-100 border-red-500 text-red-800'
-                        : 'bg-white border-explorer-outline-variant hover:border-explorer-primary'
+                          ? 'bg-green-100 border-green-600 text-green-950'
+                          : 'bg-red-100 border-red-500 text-red-950'
+                        : 'bg-white border-slate-300 hover:border-emerald-500 text-slate-900'
                     }`}
                   >
                     {option}
@@ -128,12 +143,12 @@ export default function ExplorerLessonPage() {
                 Next Slide →
               </button>
             ) : (
-              <Link
-                href="/explorer/dashboard"
-                className="px-6 py-3 rounded-full bg-green-500 text-white font-jakarta font-black text-sm border-b-2 border-green-700 shadow-tactile-green tactile-btn"
+              <button
+                onClick={handleCompleteMission}
+                className="px-6 py-3 rounded-full bg-green-600 text-white font-jakarta font-black text-sm border-b-2 border-green-800 shadow-tactile-green tactile-btn"
               >
                 Complete Mission (+50 ⭐)
-              </Link>
+              </button>
             )}
           </div>
         </div>

@@ -3,26 +3,38 @@
 import React from 'react';
 import Link from 'next/link';
 import { ExplorerNav } from '@/components/explorer/ExplorerNav';
+import { useDemo } from '@/components/global/DemoContext';
 
 export default function ExplorerDashboardPage() {
+  const { currentPersona, showToast } = useDemo();
+  const firstName = currentPersona.name.split(' ')[0] || 'Zara';
+
+  const handleSoundCheer = () => {
+    showToast('✦ Spark Mascot: "Woohoo! Keep up the great exploration!"');
+  };
+
   return (
-    <div className="min-h-screen bg-explorer-surface flex flex-col">
+    <div className="min-h-screen bg-explorer-surface flex flex-col font-sans">
       <ExplorerNav />
 
       <main className="flex-1 max-w-6xl mx-auto w-full p-6 md:p-8 space-y-8">
         {/* Spark Companion Hero Banner */}
         <div className="bg-white rounded-3xl border-4 border-explorer-outline-variant p-6 md:p-8 shadow-tactile flex flex-col md:flex-row items-center gap-6 relative overflow-hidden">
           {/* Spark Mascot Avatar */}
-          <div className="w-24 h-24 rounded-3xl bg-explorer-secondary-container text-explorer-on-secondary-container flex items-center justify-center font-jakarta font-black text-5xl shrink-0 shadow-tactile-yellow border-b-4 border-[#6e5400] animate-bounce">
+          <button
+            onClick={handleSoundCheer}
+            title="Click to high-five Spark!"
+            className="w-24 h-24 rounded-3xl bg-amber-400 text-amber-950 flex items-center justify-center font-jakarta font-black text-5xl shrink-0 shadow-tactile-yellow border-b-4 border-[#6e5400] animate-bounce hover:scale-105 transition-transform"
+          >
             ✦
-          </div>
+          </button>
 
           <div className="flex-1 text-center md:text-left space-y-2">
             <div className="inline-block px-3 py-1 rounded-full bg-explorer-primary-container text-explorer-on-primary-container font-jakarta font-extrabold text-xs uppercase tracking-wider">
               Today&apos;s Adventure
             </div>
             <h2 className="font-jakarta font-black text-2xl md:text-3xl text-on-surface">
-              Ready to explore the Solar System, Leo?
+              Ready to explore the Solar System, {firstName}?
             </h2>
             <p className="font-jakarta font-medium text-base text-on-surface-variant">
               You are on Level 4! Finish today&apos;s Mars Mission to unlock your Golden Astronaut Badge.
@@ -40,9 +52,14 @@ export default function ExplorerDashboardPage() {
 
         {/* Gamified Learning Path */}
         <div className="space-y-4">
-          <h3 className="font-jakarta font-black text-xl text-on-surface">
-            Your Learning Adventure Map
-          </h3>
+          <div className="flex items-center justify-between">
+            <h3 className="font-jakarta font-black text-xl text-on-surface">
+              Your Learning Adventure Map
+            </h3>
+            <span className="text-xs font-jakarta font-extrabold text-[#2b6c00] bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
+              ⭐ 2,850 Stars Collected
+            </span>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Quest Card 1 - Completed */}
@@ -56,8 +73,8 @@ export default function ExplorerDashboardPage() {
                 </span>
               </div>
               <div>
-                <h4 className="font-jakarta font-black text-lg text-on-surface">Earth & Moon</h4>
-                <p className="font-jakarta font-medium text-xs text-outline mt-1">Gravity & Tides</p>
+                <h4 className="font-jakarta font-black text-lg text-on-surface">Earth &amp; Moon</h4>
+                <p className="font-jakarta font-medium text-xs text-outline mt-1">Gravity &amp; Tides</p>
               </div>
               <div className="w-full bg-explorer-surface-container rounded-full h-3">
                 <div className="bg-explorer-primary h-3 rounded-full w-full" />
@@ -65,7 +82,7 @@ export default function ExplorerDashboardPage() {
             </div>
 
             {/* Quest Card 2 - Active */}
-            <div className="bg-white rounded-3xl border-4 border-explorer-secondary-container p-6 shadow-tactile flex flex-col justify-between space-y-4 relative ring-4 ring-explorer-secondary-container/40">
+            <div className="bg-white rounded-3xl border-4 border-amber-400 p-6 shadow-tactile flex flex-col justify-between space-y-4 relative ring-4 ring-amber-400/40">
               <div className="flex justify-between items-start">
                 <div className="w-14 h-14 rounded-2xl bg-amber-400 text-amber-950 flex items-center justify-center text-3xl font-black animate-pulse">
                   🚀
@@ -83,7 +100,7 @@ export default function ExplorerDashboardPage() {
               </div>
               <Link
                 href="/explorer/lesson"
-                className="w-full py-2.5 rounded-full bg-explorer-secondary-container text-explorer-on-secondary-container font-jakarta font-extrabold text-xs text-center border-b-2 border-[#6e5400] tactile-btn"
+                className="w-full py-2.5 rounded-full bg-amber-400 text-amber-950 font-jakarta font-extrabold text-xs text-center border-b-2 border-[#6e5400] tactile-btn shadow-sm"
               >
                 Continue Quest
               </Link>
@@ -116,7 +133,7 @@ export default function ExplorerDashboardPage() {
               </div>
               <div>
                 <h4 className="font-jakarta font-black text-lg text-on-surface">Deep Galaxies</h4>
-                <p className="font-jakarta font-medium text-xs text-outline mt-1">Milky Way & Beyond</p>
+                <p className="font-jakarta font-medium text-xs text-outline mt-1">Milky Way &amp; Beyond</p>
               </div>
               <div className="w-full bg-explorer-surface-container rounded-full h-3">
                 <div className="bg-slate-300 h-3 rounded-full w-0" />

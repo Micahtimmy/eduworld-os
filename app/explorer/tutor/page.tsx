@@ -2,12 +2,16 @@
 
 import React, { useState } from 'react';
 import { ExplorerNav } from '@/components/explorer/ExplorerNav';
+import { useDemo } from '@/components/global/DemoContext';
 
 export default function ExplorerTutorPage() {
+  const { currentPersona } = useDemo();
+  const firstName = currentPersona.name.split(' ')[0] || 'Zara';
+
   const [messages, setMessages] = useState([
     {
       sender: 'spark',
-      text: 'Hi Leo! 🌟 I am Spark, your friendly AI science explorer! What cool questions do you have about space, animals, or dinosaur bones today?',
+      text: `Hi ${firstName}! 🌟 I am Spark, your friendly AI science explorer! What cool questions do you have about space, animals, or dinosaur bones today?`,
     },
   ]);
   const [input, setInput] = useState('');
@@ -22,16 +26,18 @@ export default function ExplorerTutorPage() {
     setTimeout(() => {
       let reply = "That's a fantastic question! Did you know that space is totally silent because there is no air for sound to bounce through?";
       if (text.toLowerCase().includes('mars')) {
-        reply = "Mars has two tiny potatoes-shaped moons named Phobos and Deimos! 🥔🌕";
+        reply = "Mars has two tiny potato-shaped moons named Phobos and Deimos! 🥔🌕";
       } else if (text.toLowerCase().includes('sun')) {
         reply = "The Sun is so huge that over ONE MILLION planet Earths could fit inside it! ☀️🔥";
+      } else if (text.toLowerCase().includes('black hole')) {
+        reply = "A black hole has gravity so strong that even light cannot escape from it! 🕳️✨";
       }
       setMessages((prev) => [...prev, { sender: 'spark', text: reply }]);
     }, 500);
   };
 
   return (
-    <div className="min-h-screen bg-explorer-surface flex flex-col">
+    <div className="min-h-screen bg-explorer-surface flex flex-col font-sans">
       <ExplorerNav />
 
       <main className="flex-1 max-w-4xl mx-auto w-full p-6 md:p-8 flex flex-col space-y-4">
@@ -44,15 +50,15 @@ export default function ExplorerTutorPage() {
                 className={`flex items-end gap-3 ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {m.sender === 'spark' && (
-                  <div className="w-10 h-10 rounded-2xl bg-explorer-secondary-container text-explorer-on-secondary-container flex items-center justify-center font-black text-xl border-b-2 border-[#6e5400] shrink-0">
+                  <div className="w-10 h-10 rounded-2xl bg-amber-400 text-amber-950 flex items-center justify-center font-black text-xl border-b-2 border-[#6e5400] shrink-0">
                     ✦
                   </div>
                 )}
                 <div
                   className={`p-4 rounded-3xl font-jakarta font-semibold text-sm max-w-md ${
                     m.sender === 'user'
-                      ? 'bg-explorer-primary-container text-explorer-on-primary-container rounded-br-none border-2 border-[#1e5000]'
-                      : 'bg-amber-50 text-on-surface border-2 border-amber-200 rounded-bl-none'
+                      ? 'bg-emerald-600 text-white rounded-br-none border-2 border-emerald-700'
+                      : 'bg-amber-50 text-slate-900 border-2 border-amber-200 rounded-bl-none'
                   }`}
                 >
                   {m.text}
@@ -68,7 +74,7 @@ export default function ExplorerTutorPage() {
                 <button
                   key={p}
                   onClick={() => handleSend(p)}
-                  className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 font-jakarta font-bold text-xs hover:bg-amber-100 hover:text-amber-900 transition-colors"
+                  className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-800 font-jakarta font-bold text-xs hover:bg-amber-100 hover:text-amber-950 transition-colors border border-slate-200"
                 >
                   {p}
                 </button>
@@ -87,13 +93,13 @@ export default function ExplorerTutorPage() {
             <input
               type="text"
               placeholder="Ask Spark anything! (e.g. Why is the sky blue?)"
-              className="flex-1 bg-slate-100 border-2 border-slate-200 rounded-full px-5 py-3 font-jakarta font-medium text-sm text-on-surface outline-none focus:border-explorer-primary"
+              className="flex-1 bg-slate-100 border-2 border-slate-200 rounded-full px-5 py-3 font-jakarta font-medium text-sm text-on-surface outline-none focus:border-emerald-600"
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
             <button
               type="submit"
-              className="px-6 py-3 rounded-full bg-explorer-primary-container text-explorer-on-primary-container font-jakarta font-black text-sm border-b-2 border-[#1e5000] shadow-tactile-green tactile-btn"
+              className="px-6 py-3 rounded-full bg-emerald-600 text-white font-jakarta font-black text-sm border-b-2 border-emerald-800 shadow-tactile-green tactile-btn"
             >
               Ask!
             </button>

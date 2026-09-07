@@ -13,6 +13,16 @@ export type RoleType =
   | 'enterprise' 
   | 'government';
 
+export interface AppNotification {
+  id: string;
+  title: string;
+  message: string;
+  time: string;
+  read: boolean;
+  type: 'academic' | 'reward' | 'system' | 'billing';
+  link?: string;
+}
+
 export interface DemoPersona {
   id: RoleType;
   name: string;
@@ -43,7 +53,7 @@ export const DEMO_PERSONAS: Record<RoleType, DemoPersona> = {
     institution: "King's College Lagos • Target JAMB 342+",
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
     badge: 'Achiever Elite',
-    badgeColor: 'bg-primary text-white',
+    badgeColor: 'bg-[#003f7a] text-white',
     primaryPath: '/achiever/dashboard',
     metrics: {
       primaryLabel: 'JAMB Readiness',
@@ -62,7 +72,7 @@ export const DEMO_PERSONAS: Record<RoleType, DemoPersona> = {
     institution: 'St. Claire Elementary • Science Division',
     avatar: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=150&auto=format&fit=crop&q=80',
     badge: 'Galactic Cadet',
-    badgeColor: 'bg-explorer-primary text-white',
+    badgeColor: 'bg-[#2b6c00] text-white',
     primaryPath: '/explorer/dashboard',
     metrics: {
       primaryLabel: 'Stars Collected',
@@ -81,7 +91,7 @@ export const DEMO_PERSONAS: Record<RoleType, DemoPersona> = {
     institution: 'Imperial College London • Quantum Informatics',
     avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
     badge: 'Ivy Scholar',
-    badgeColor: 'bg-scholar-primary text-white',
+    badgeColor: 'bg-[#131b2e] text-white',
     primaryPath: '/scholar/dashboard',
     metrics: {
       primaryLabel: 'Cumulative GPA',
@@ -150,7 +160,7 @@ export const DEMO_PERSONAS: Record<RoleType, DemoPersona> = {
     institution: 'TechGlobal Inc • 450 Enrolled Engineers',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
     badge: 'Enterprise VP',
-    badgeColor: 'bg-primary text-white',
+    badgeColor: 'bg-[#003f7a] text-white',
     primaryPath: '/enterprise/dashboard',
     metrics: {
       primaryLabel: 'Upskilling ROI',
@@ -179,6 +189,36 @@ export const DEMO_PERSONAS: Record<RoleType, DemoPersona> = {
   },
 };
 
+const INITIAL_NOTIFICATIONS: AppNotification[] = [
+  {
+    id: 'n1',
+    title: 'Diagnostic Mastery Alert',
+    message: 'Work, Energy & Power identified as high-priority recovery topic.',
+    time: '5m ago',
+    read: false,
+    type: 'academic',
+    link: '/achiever/diagnostic',
+  },
+  {
+    id: 'n2',
+    title: '14-Day Study Streak Active',
+    message: 'You earned +120 XP for completing your daily CBT physics drill!',
+    time: '1h ago',
+    read: false,
+    type: 'reward',
+    link: '/achiever/shop',
+  },
+  {
+    id: 'n3',
+    title: 'New Socratic AI Tutor Recommendation',
+    message: 'Dr. Socratic prepared a 10-question practice set on 2D Trajectories.',
+    time: '3h ago',
+    read: true,
+    type: 'academic',
+    link: '/achiever/ai-partner',
+  },
+];
+
 interface DemoContextType {
   currentRole: RoleType;
   currentPersona: DemoPersona;
@@ -186,6 +226,12 @@ interface DemoContextType {
   toastMessage: string | null;
   showToast: (msg: string) => void;
   resetDemoData: () => void;
+  notifications: AppNotification[];
+  markNotificationAsRead: (id: string) => void;
+  addNotification: (title: string, message: string, type?: AppNotification['type'], link?: string) => void;
+  currency: 'USD' | 'NGN' | 'GBP';
+  setCurrency: (c: 'USD' | 'NGN' | 'GBP') => void;
+  formatCurrency: (amount: number) => string;
 }
 
 const DemoContext = createContext<DemoContextType | undefined>(undefined);
@@ -193,6 +239,8 @@ const DemoContext = createContext<DemoContextType | undefined>(undefined);
 export function DemoProvider({ children }: { children: React.ReactNode }) {
   const [currentRole, setCurrentRole] = useState<RoleType>('achiever');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [notifications, setNotifications] = useState<AppNotification[]>(INITIAL_NOTIFICATIONS);
+  const [currency, setCurrency] = useState<'USD' | 'NGN' | 'GBP'>('USD');
   const router = useRouter();
 
   useEffect(() => {
@@ -201,9 +249,11 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
       if (stored && DEMO_PERSONAS[stored]) {
         setCurrentRole(stored);
       }
-    } catch (e) {
-      // Ignore localStorage errors in SSR
-    }
+      const storedCurr = localStorage.getItem('eduworld_currency') as 'USD' | 'NGN' | 'GBP';
+      if (storedCurr) {
+        setCurrency(storedCurr);
+      }
+    } catch (e) {}
   }, []);
 
   const switchRole = (role: RoleType) => {
@@ -223,13 +273,47 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     }, 4000);
   };
 
+  const addNotification = (
+    title: string,
+    message: string,
+    type: AppNotification['type'] = 'system',
+    link?: string
+  ) => {
+    const newNotif: AppNotification = {
+      id: 'notif_' + Date.now(),
+      title,
+      message,
+      time: 'Just now',
+      read: false,
+      type,
+      link,
+    };
+    setNotifications((prev) => [newNotif, ...prev]);
+  };
+
+  const markNotificationAsRead = (id: string) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+    );
+  };
+
+  const formatCurrency = (amount: number) => {
+    if (currency === 'NGN') {
+      return `₦${(amount * 1550).toLocaleString()}`;
+    } else if (currency === 'GBP') {
+      return `£${(amount * 0.78).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+    return `$${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  };
+
   const resetDemoData = () => {
     try {
       localStorage.clear();
       localStorage.setItem('eduworld_demo_role', 'achiever');
       setCurrentRole('achiever');
-      showToast('Demo data successfully reset to factory defaults.');
-      router.push('/achiever/diagnostic');
+      setNotifications(INITIAL_NOTIFICATIONS);
+      showToast('Demo state and persona records successfully reset to factory defaults.');
+      router.push('/achiever/dashboard');
     } catch (e) {}
   };
 
@@ -244,13 +328,19 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
         toastMessage,
         showToast,
         resetDemoData,
+        notifications,
+        markNotificationAsRead,
+        addNotification,
+        currency,
+        setCurrency,
+        formatCurrency,
       }}
     >
       {children}
       {toastMessage && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-[9999] bg-[#131b2e] text-white px-5 py-3 rounded-2xl shadow-2xl border border-slate-700/80 flex items-center gap-3 animate-in fade-in slide-in-from-bottom-5 duration-300">
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-[99999] bg-[#131b2e] text-white px-5 py-3 rounded-2xl shadow-2xl border border-slate-700/80 flex items-center gap-3 animate-in fade-in slide-in-from-bottom-5 duration-300">
           <span className="material-symbols-outlined text-[#6ffbbe] text-xl">verified</span>
-          <span className="text-sm font-semibold tracking-wide font-sans">{toastMessage}</span>
+          <span className="text-xs font-semibold tracking-wide font-sans">{toastMessage}</span>
           <button 
             onClick={() => setToastMessage(null)}
             className="ml-2 text-slate-400 hover:text-white transition-colors"

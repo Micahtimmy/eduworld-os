@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useDemo } from '@/components/global/DemoContext';
+import { GlobalHeaderNotifications } from '@/components/global/GlobalHeaderNotifications';
 
 interface AchieverHeaderProps {
   title?: string;
@@ -35,7 +36,7 @@ export function AchieverHeader({
           className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-300 bg-slate-50 text-slate-800 text-xs font-inter hover:border-[#003f7a] transition-all shadow-xs"
         >
           <span className="material-symbols-outlined text-base text-slate-500">search</span>
-          <span className="font-semibold text-slate-700">Search syllabus, mock exams, tools...</span>
+          <span className="font-semibold text-slate-700">Search syllabus, CBT mocks, tools...</span>
           <kbd className="px-1.5 py-0.5 font-mono text-[10px] bg-white rounded border border-slate-300 text-slate-700 font-bold">
             ⌘K
           </kbd>
@@ -61,6 +62,19 @@ export function AchieverHeader({
           <span className="material-symbols-outlined text-base">bolt</span>
           <span>{currentPersona.metrics.xp || 8420} XP</span>
         </div>
+
+        {/* Notifications */}
+        <GlobalHeaderNotifications />
+
+        {/* Avatar link to settings */}
+        <Link href="/settings" className="shrink-0">
+          <img
+            src={currentPersona.avatar}
+            alt={currentPersona.name}
+            className="w-8 h-8 rounded-full object-cover border border-slate-300 hover:ring-2 hover:ring-[#003f7a] transition-all"
+            title={`${currentPersona.name} (${currentPersona.badge})`}
+          />
+        </Link>
       </div>
     </header>
   );
