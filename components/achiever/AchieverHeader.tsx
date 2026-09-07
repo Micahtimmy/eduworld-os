@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useDemo } from '@/components/global/DemoContext';
 
 interface AchieverHeaderProps {
   title?: string;
@@ -12,14 +13,16 @@ export function AchieverHeader({
   title = 'Achiever Exam Readiness',
   subtitle = 'JAMB / WAEC National Diagnostic Engine',
 }: AchieverHeaderProps) {
+  const { currentPersona } = useDemo();
+
   return (
-    <header className="h-16 px-6 bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between sticky top-0 z-30 shadow-xs">
+    <header className="h-16 px-6 bg-white border-b border-slate-200 flex items-center justify-between sticky top-0 z-30 shadow-xs">
       <div className="flex items-center gap-4">
         <div>
-          <h2 className="font-jakarta font-bold text-base text-on-surface leading-tight">
+          <h2 className="font-jakarta font-extrabold text-base text-slate-900 leading-tight">
             {title}
           </h2>
-          <p className="text-xs text-on-surface-variant font-inter">{subtitle}</p>
+          <p className="text-xs text-slate-500 font-inter font-medium">{subtitle}</p>
         </div>
       </div>
 
@@ -29,11 +32,11 @@ export function AchieverHeader({
           onClick={() => {
             window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }));
           }}
-          className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl border border-outline-variant bg-surface-container-low text-on-surface-variant text-xs font-inter hover:border-primary transition-all"
+          className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-300 bg-slate-50 text-slate-800 text-xs font-inter hover:border-[#003f7a] transition-all shadow-xs"
         >
-          <span className="material-symbols-outlined text-base text-outline">search</span>
-          <span>Search syllabus, mock exams, tools...</span>
-          <kbd className="px-1.5 py-0.5 font-mono text-[10px] bg-white rounded border border-outline-variant text-outline">
+          <span className="material-symbols-outlined text-base text-slate-500">search</span>
+          <span className="font-semibold text-slate-700">Search syllabus, mock exams, tools...</span>
+          <kbd className="px-1.5 py-0.5 font-mono text-[10px] bg-white rounded border border-slate-300 text-slate-700 font-bold">
             ⌘K
           </kbd>
         </button>
@@ -41,22 +44,22 @@ export function AchieverHeader({
         {/* Diagnostic Wedge Quick Launch Button */}
         <Link
           href="/achiever/diagnostic"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-secondary text-on-secondary font-jakarta text-xs font-semibold hover:bg-secondary/90 transition-all shadow-sm"
+          className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#006c49] text-white font-jakarta text-xs font-extrabold hover:bg-[#005236] transition-all shadow-xs active:scale-95"
         >
           <span className="material-symbols-outlined text-base">quiz</span>
           <span>Launch Diagnostic</span>
         </Link>
 
         {/* Streak Counter */}
-        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-tertiary-fixed text-on-tertiary-fixed text-xs font-bold font-jakarta">
-          <span className="material-symbols-outlined text-base text-tertiary">local_fire_department</span>
-          <span>14d Streak</span>
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-100 text-amber-950 text-xs font-black font-jakarta border border-amber-300 shadow-xs">
+          <span className="material-symbols-outlined text-base text-amber-700">local_fire_department</span>
+          <span>{currentPersona.metrics.streak || 14}d Streak</span>
         </div>
 
         {/* XP Points */}
-        <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-primary-fixed text-on-primary-fixed text-xs font-bold font-mono">
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-100 text-[#003f7a] text-xs font-black font-mono border border-blue-200 shadow-xs">
           <span className="material-symbols-outlined text-base">bolt</span>
-          <span>2,450 XP</span>
+          <span>{currentPersona.metrics.xp || 8420} XP</span>
         </div>
       </div>
     </header>

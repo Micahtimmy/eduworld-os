@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { CommandPalette } from '@/components/global/CommandPalette';
+import { DemoProvider } from '@/components/global/DemoContext';
+import { DemoSwitcher } from '@/components/global/DemoSwitcher';
 
 export const metadata: Metadata = {
   title: 'EduWorld — Unified Global Learning OS',
@@ -27,8 +29,11 @@ export default function RootLayout({
         />
       </head>
       <body className="h-full bg-surface text-on-surface antialiased font-sans selection:bg-primary-fixed selection:text-primary">
-        {children}
-        <CommandPalette />
+        <DemoProvider>
+          {children}
+          <CommandPalette />
+          <DemoSwitcher />
+        </DemoProvider>
       </body>
     </html>
   );
