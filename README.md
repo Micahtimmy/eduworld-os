@@ -67,10 +67,10 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/new_edu.git
+git clone https://github.com/Micahtimmy/eduworld-os.git
 
 # Navigate to project directory
-cd new_edu
+cd eduworld-os
 
 # Install dependencies
 npm install
