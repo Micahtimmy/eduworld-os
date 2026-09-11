@@ -253,14 +253,14 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
       if (storedCurr) {
         setCurrency(storedCurr);
       }
-    } catch (e) {}
+    } catch {}
   }, []);
 
   const switchRole = (role: RoleType) => {
     setCurrentRole(role);
     try {
       localStorage.setItem('eduworld_demo_role', role);
-    } catch (e) {}
+    } catch {}
     
     showToast(`Switched persona to ${DEMO_PERSONAS[role].name} (${DEMO_PERSONAS[role].badge})`);
     router.push(DEMO_PERSONAS[role].primaryPath);
@@ -314,7 +314,7 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
       setNotifications(INITIAL_NOTIFICATIONS);
       showToast('Demo state and persona records successfully reset to factory defaults.');
       router.push('/achiever/dashboard');
-    } catch (e) {}
+    } catch {}
   };
 
   const currentPersona = DEMO_PERSONAS[currentRole] || DEMO_PERSONAS.achiever;

@@ -131,7 +131,7 @@ export default function TeacherDashboardPage() {
           <span className="text-[10px] font-mono uppercase text-outline font-bold">Active Lecture Cohort:</span>
           <select
             value={selectedCohort}
-            onChange={(e) => setSelectedCohort(e.target.value as any)}
+            onChange={(e) => setSelectedCohort(e.target.value as 'physics-a' | 'quantum-b' | 'lab-c')}
             className="w-full p-2 rounded-xl border border-outline-variant bg-white font-jakarta text-xs font-bold text-on-surface outline-none focus:border-primary"
           >
             <option value="physics-a">Senior Physics (Cohort A • 32)</option>

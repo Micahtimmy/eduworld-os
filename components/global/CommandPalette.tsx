@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 interface CommandItem {
@@ -170,7 +169,7 @@ const COMMANDS: CommandItem[] = [
     subtitle: 'Curriculum standards alignment, prompt builder, and export tool',
     tier: 'Teacher',
     icon: 'edit_note',
-    href: '/teacher/lesson-planner',
+    href: '/teacher/dashboard',
   },
   {
     id: 'teacher-grading',
@@ -178,7 +177,7 @@ const COMMANDS: CommandItem[] = [
     subtitle: 'Split-view student submission grading with AI feedback assist',
     tier: 'Teacher',
     icon: 'checklist',
-    href: '/teacher/grading',
+    href: '/teacher/dashboard',
   },
   {
     id: 'parent-command',
@@ -218,7 +217,7 @@ const COMMANDS: CommandItem[] = [
     subtitle: 'Room assignment optimizer and timetable clash resolver',
     tier: 'Admin',
     icon: 'calendar_month',
-    href: '/admin/scheduling',
+    href: '/admin/dashboard',
   },
   {
     id: 'enterprise-command',
@@ -234,7 +233,7 @@ const COMMANDS: CommandItem[] = [
     subtitle: 'Enterprise AI track, executive upskilling, and certification pipeline',
     tier: 'Enterprise',
     icon: 'corporate_fare',
-    href: '/enterprise/programs',
+    href: '/enterprise/dashboard',
   },
   {
     id: 'government-dashboard',

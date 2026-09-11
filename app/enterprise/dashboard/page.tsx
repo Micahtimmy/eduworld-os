@@ -64,7 +64,7 @@ export default function EnterpriseDashboardPage() {
   const [newTrackWeeks, setNewTrackWeeks] = useState('6 Weeks');
 
   // Skills matrix
-  const [skills, setSkills] = useState<SkillMatrixItem[]>([
+  const [skills] = useState<SkillMatrixItem[]>([
     { team: 'Machine Learning', skill: 'PyTorch & Fine-Tuning', proficiency: 92, status: 'Mastered' },
     { team: 'Core Platform', skill: 'Rust Distributed Engines', proficiency: 74, status: 'Proficient' },
     { team: 'Cloud Ops', skill: 'Kubernetes Multi-Cluster', proficiency: 88, status: 'Mastered' },

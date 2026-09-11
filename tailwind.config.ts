@@ -13,6 +13,8 @@ const config: Config = {
         // Global / Achiever / Operational Tiers
         primary: {
           DEFAULT: '#003f7a',
+          'on': '#ffffff',
+          'on-primary': '#ffffff',
           container: '#1e5799',
           'on-container': '#b0ceff',
           fixed: '#d5e3ff',
@@ -23,6 +25,8 @@ const config: Config = {
         },
         secondary: {
           DEFAULT: '#006c49',
+          'on': '#ffffff',
+          'on-secondary': '#ffffff',
           container: '#6cf8bb',
           'on-container': '#00714d',
           fixed: '#6ffbbe',
@@ -32,6 +36,8 @@ const config: Config = {
         },
         tertiary: {
           DEFAULT: '#5b3700',
+          'on': '#ffffff',
+          'on-tertiary': '#ffffff',
           container: '#7a4c00',
           'on-container': '#ffc174',
           fixed: '#ffddb8',

@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useDemo, RoleType } from '@/components/global/DemoContext';
 
 interface RoleOption {
@@ -88,7 +87,6 @@ const ROLES: RoleOption[] = [
 export default function RoleSelectionPage() {
   const { switchRole } = useDemo();
   const [selectedRole, setSelectedRole] = useState<RoleOption>(ROLES[0]);
-  const router = useRouter();
 
   const handleProceed = () => {
     if (selectedRole) {

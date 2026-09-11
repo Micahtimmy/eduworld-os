@@ -163,6 +163,21 @@ export default function GlobalSettingsPage() {
                   className="w-5 h-5 accent-[#003f7a] cursor-pointer"
                 />
               </div>
+
+              <div className="flex items-center justify-between py-2 border-t border-slate-100">
+                <div>
+                  <p className="font-bold text-slate-900">Email Digest &amp; Examination Reminders</p>
+                  <p className="text-slate-500 text-[11px] mt-0.5">
+                    Receive weekly AI executive performance summaries and test reminders via email.
+                  </p>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={emailAlerts}
+                  onChange={(e) => setEmailAlerts(e.target.checked)}
+                  className="w-5 h-5 accent-[#003f7a] cursor-pointer"
+                />
+              </div>
             </div>
           </div>
 

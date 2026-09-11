@@ -5,7 +5,7 @@ import { useDemo, DEMO_PERSONAS, RoleType } from './DemoContext';
 import Link from 'next/link';
 
 export function DemoSwitcher() {
-  const { currentRole, currentPersona, switchRole, resetDemoData, showToast } = useDemo();
+  const { currentRole, currentPersona, switchRole, resetDemoData } = useDemo();
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
 

@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { ScholarNav } from '@/components/scholar/ScholarNav';
 import { useDemo } from '@/components/global/DemoContext';
+
+type AuditTab = 'audit' | 'electives' | 'projections';
 
 interface Requirement {
   category: string;
@@ -49,7 +50,7 @@ const REQUIREMENTS: Requirement[] = [
 
 export default function ScholarDegreeAuditPage() {
   const { currentPersona, showToast } = useDemo();
-  const [selectedTab, setSelectedTab] = useState<'audit' | 'electives' | 'projections'>('audit');
+  const [selectedTab, setSelectedTab] = useState<AuditTab>('audit');
 
   const totalRequired = 128;
   const totalCompleted = 118;
@@ -113,21 +114,21 @@ export default function ScholarDegreeAuditPage() {
                 />
               </div>
               <span className="text-[10px] font-mono text-slate-300 mt-2 block">
-                4 Credits Remaining to Graduate
+                {remaining} Credits Remaining to Graduate
               </span>
             </div>
           </div>
 
           {/* Audit Navigation Tabs */}
           <div className="flex border-b border-[#c6c6cd] gap-2">
-            {[
+            {([
               { id: 'audit', label: 'Degree Requirements Checklist', icon: 'fact_check' },
               { id: 'electives', label: 'Elective Course Planner', icon: 'edit_calendar' },
               { id: 'projections', label: 'GPA & Honors Projections', icon: 'trending_up' },
-            ].map((tab) => (
+            ] as const).map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setSelectedTab(tab.id as any)}
+                onClick={() => setSelectedTab(tab.id)}
                 className={`flex items-center gap-2 px-5 py-3 border-b-2 font-jakarta font-semibold text-xs transition-all ${
                   selectedTab === tab.id
                     ? 'border-[#131b2e] text-[#131b2e] font-bold bg-white/60 rounded-t-xl'

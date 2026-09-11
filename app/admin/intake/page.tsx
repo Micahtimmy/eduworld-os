@@ -24,8 +24,8 @@ const INITIAL_RECORDS: StudentRecord[] = [
 
 export default function AdminIntakePage() {
   const { currentPersona, showToast } = useDemo();
-  const [records, setRecords] = useState<StudentRecord[]>(INITIAL_RECORDS);
-  const [fileName, setFileName] = useState<string>('2026_Term2_Senior_Enrollment_Roster.csv');
+  const [records] = useState<StudentRecord[]>(INITIAL_RECORDS);
+  const [fileName] = useState<string>('2026_Term2_Senior_Enrollment_Roster.csv');
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleCommitEnrollment = () => {
@@ -68,7 +68,7 @@ export default function AdminIntakePage() {
           </Link>
 
           <Link
-            href="/admin/scheduling"
+            href="/admin/dashboard"
             className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-jakarta text-xs font-bold text-slate-300 hover:bg-slate-800 hover:text-white transition-all"
           >
             <span className="material-symbols-outlined text-lg text-slate-400">calendar_month</span>

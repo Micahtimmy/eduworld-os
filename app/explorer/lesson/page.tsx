@@ -7,7 +7,7 @@ import { ExplorerNav } from '@/components/explorer/ExplorerNav';
 import { useDemo } from '@/components/global/DemoContext';
 
 export default function ExplorerLessonPage() {
-  const { currentPersona, showToast, addNotification } = useDemo();
+  const { showToast, addNotification } = useDemo();
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showSparkQuiz, setShowSparkQuiz] = useState(false);

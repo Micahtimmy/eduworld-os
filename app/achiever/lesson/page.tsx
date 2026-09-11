@@ -38,7 +38,7 @@ const LESSON_SEGMENTS: LessonSegment[] = [
 ];
 
 export default function AchieverLessonPage() {
-  const { currentPersona, showToast } = useDemo();
+  const { showToast } = useDemo();
   const [activeSegment, setActiveSegment] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [notes, setNotes] = useState(
